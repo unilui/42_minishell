@@ -1,0 +1,56 @@
+OK -> echo hello world
+OK -> echo "hello world"
+OK -> echo 'hello world'
+OK -> echo hello'world'
+OK -> echo hello""world
+OK -> echo ''
+OK -> echo "$PWD"
+OK -> echo '$PWD'
+OK -> echo "aspas ->'"
+OK -> echo "aspas -> ' "
+OK -> echo 'aspas ->"'
+OK -> echo 'aspas -> " '
+OK -> echo "> >> < * ? [ ] | ; [ ] || && ( ) & # $ \ <<"
+OK -> echo '> >> < * ? [ ] | ; [ ] || && ( ) & # $ \ <<'
+OK -> echo "exit_code ->$? user ->$USER home -> $HOME"
+OK -> echo 'exit_code ->$? user ->$USER home -> $HOME'
+OK -> echo "$"
+OK -> echo '$'
+OK -> echo $
+OK -> echo $?
+OK -> echo $?HELLO
+OK -> pwd
+OK -> pwd oi
+OK -> export hello
+OK -> export HELLO=123
+OK -> export A-
+OK -> export HELLO=123 A
+OK -> export HELLO="123 A-"
+OK -> export hello world
+OK -> export HELLO-=123
+OK -> export =
+OK -> export 123
+OK -> unset
+OK -> unset HELLO
+OK -> unset HELLO1 HELLO2
+OK -> unset HOME
+OK -> unset PATH
+OK -> unset SHELL
+OK -> cd $PWD
+OK -> cd $PWD hi
+OK -> cd 123123
+OK -> exit 123
+OK -> exit 298
+OK -> exit +100
+OK -> exit "+100"
+OK -> exit +"100"
+OK -> exit -100
+OK -> exit "-100"
+OK -> exit -"100"
+OK -> exit hello
+OK -> exit 42 world
+OK -> exit 9223372036854775807
+OK -> exit 9223372036854775808
+OK -> exit -9223372036854775807
+OK -> exit -9223372036854775808
+OK -> exit -9223372036854775809
