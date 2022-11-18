@@ -6,7 +6,7 @@
 /*   By: lufelip2 <lufelip2@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 21:17:37 by lufelip2          #+#    #+#             */
-/*   Updated: 2022/11/17 19:43:43 by lufelip2         ###   ########.fr       */
+/*   Updated: 2022/11/18 20:56:40 by lufelip2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,24 +97,25 @@ int	wrong_op(void)
 
 int	sequence_op(void)
 {
-	char	**tokens;
 	int		i;
+	int		op;
 
 	i = 0;
-	tokens = token_split(g_data.line, is_not_operator);
-	while (tokens[i])
+	op = 0;
+	while (g_data.line[i])
 	{
-		if (*tokens[i] && valid_operator(tokens[i])
-			&& tokens[i + 1] && *tokens[i + 1]
-			&& valid_operator(tokens[i + 1]))
+		if (is_operator(i, g_data.line) && op)
 		{
 			ft_printf("syntax error near unexpected token: `%c'\n",
-				tokens[i][0]);
-			free_table(tokens);
+				g_data.line[i]);
 			return (1);
 		}
+		else if (is_operator(i, g_data.line)
+			&& !is_operator(i + 1, g_data.line))
+			op = 1;
+		else if (!is_operator(i, g_data.line) && g_data.line[i] != ' ')
+			op = 0;
 		i++;
 	}
-	free_table(tokens);
 	return (0);
 }
