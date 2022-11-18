@@ -6,7 +6,7 @@
 /*   By: lufelip2 <lufelip2@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/05 21:50:19 by lufelip2          #+#    #+#             */
-/*   Updated: 2022/11/11 10:07:16 by lufelip2         ###   ########.fr       */
+/*   Updated: 2022/11/17 19:39:29 by lufelip2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,26 +68,9 @@ int	btw_single_quotes(char *str)
 	return (i < x);
 }
 
-void	replace_home(char **var)
-{
-	char	*tmp;
-
-	if (ft_strlen(*var) > 1)
-	{
-		tmp = ft_strjoin(g_data.home, *var + 1);
-		free(*var);
-		*var = tmp;
-	}
-	else
-	{
-		free(*var);
-		*var = ft_strdup(g_data.home);
-	}
-}
-
 int	is_valid_identifier(char const *chr)
 {
-	char chr_i;
+	char	chr_i;
 
 	chr_i = *(chr + 1);
 	if (ft_isalnum(chr_i) || chr_i == '?' || chr_i == '~')

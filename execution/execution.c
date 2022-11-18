@@ -6,36 +6,12 @@
 /*   By: lufelip2 <lufelip2@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 00:36:26 by lufelip2          #+#    #+#             */
-/*   Updated: 2022/11/12 22:42:01 by lufelip2         ###   ########.fr       */
+/*   Updated: 2022/11/17 21:59:30 by lufelip2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
-
-
-void	print_token(t_cmd *cmd)
-{
-	int	i;
-
-	i = 1;
-	ft_printf("Command name: %s\n", cmd->name);
-	while (cmd->args[i])
-	{
-		ft_printf("Argument %d: %s\n", i, cmd->args[i]);
-		i++;
-	}
-	ft_printf("Pipe in: %d\n", cmd->pipe_in);
-	ft_printf("Pipe out: %d\n", cmd->pipe_out);
-	if (cmd->type == 1)
-		ft_printf("Type: EXTERNAL\n");
-	else if (cmd->type == 2)
-		ft_printf("Type: BUILT_IN\n");
-	else if (cmd->type == 3)
-		ft_printf("Type: EXT_BUILT_IN\n");
-	ft_printf("=======================================\n");
-}
-
 
 void	wait_child(int *status)
 {
@@ -75,26 +51,15 @@ void	exec_builtin(t_cmd *cmd)
 		builtin_import(cmd->args);
 }
 
-void	set_child_pipes(t_cmd *cmd)
+void	wait_handler(t_cmd *cmd, int *wait_builtin, int last_type)
 {
-	int	fd;
-
-	if (cmd->next)
-		pipe_handler(CLOSE_INIT);
-	else
-		pipe_handler(CIRCLE_PIPE);
-	close(g_data.pipe_in[1]);
-	if ((cmd->type == EXTERNAL && cmd->next) || cmd->pipe_in)
-	{
-		fd = dup(g_data.pipe_in[0]);
-		dup2(fd, STDIN_FILENO);
-	}
-	close(g_data.pipe_out[0]);
-	if (cmd->pipe_out)
-	{
-		fd = dup(g_data.pipe_out[1]);
-		dup2(fd, STDOUT_FILENO);
-	}
+	if (*wait_builtin && cmd->type == EXT_BUILT_IN)
+		wait_child(wait_builtin);
+	if (cmd->type == EXT_BUILT_IN
+		&& last_type == EXT_BUILT_IN
+		&& cmd->next
+		&& cmd->next->type == EXTERNAL)
+		*wait_builtin = 1;
 }
 
 void	child_process(t_cmd *cmd)
@@ -103,16 +68,7 @@ void	child_process(t_cmd *cmd)
 	static int	last_type;
 
 	pipe_handler(SWAP);
-	if (wait_builtin && cmd->type == EXT_BUILT_IN)
-	{
-		printf("%s->%s\n", cmd->name, cmd->args[1]);
-		wait_child(&wait_builtin);
-	}
-	if (cmd->type == EXT_BUILT_IN
-		&& last_type == EXT_BUILT_IN
-		&& cmd->next
-		&& cmd->next->type == EXTERNAL)
-		wait_builtin = 1;
+	wait_handler(cmd, &wait_builtin, last_type);
 	if (!fork())
 	{
 		sig_defaults();

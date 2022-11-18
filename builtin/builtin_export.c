@@ -6,14 +6,14 @@
 /*   By: lufelip2 <lufelip2@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 03:38:19 by lufelip2          #+#    #+#             */
-/*   Updated: 2022/11/11 21:04:24 by lufelip2         ###   ########.fr       */
+/*   Updated: 2022/11/17 19:26:14 by lufelip2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
 
-static int is_valid_name(char *var)
+static int	is_valid_name(char *var)
 {
 	int	i;
 	int	letter;
@@ -28,7 +28,8 @@ static int is_valid_name(char *var)
 			&& ft_strchr(var, '=') > ft_strchr(var, var[i]))
 			return (0);
 		if (ft_isalpha(var[i])
-			&& (ft_strchr(var, var[i]) < ft_strchr(var, '=') || !ft_strchr(var, '=')))
+			&& (ft_strchr(var, var[i]) < ft_strchr(var, '=')
+				|| !ft_strchr(var, '=')))
 			letter = 1;
 		i++;
 	}

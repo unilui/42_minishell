@@ -6,7 +6,7 @@
 /*   By: lufelip2 <lufelip2@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 00:29:12 by lufelip2          #+#    #+#             */
-/*   Updated: 2022/11/13 15:11:08 by lufelip2         ###   ########.fr       */
+/*   Updated: 2022/11/17 21:59:48 by lufelip2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,5 +167,20 @@ void	syntax_validate(void);
 int		is_valid_identifier(char const *chr);
 int		is_directory(char *path);
 int		is_not_operator(int position, char const *line);
+int		no_quotes(char *var);
+void	put_quotes(char **var);
+void	replace_exit_code(char **str);
+void	replace_home(char **var);
+int		open_quotes(void);
+int		unexpected_token(void);
+int		valid_operator(char *op);
+int		wrong_op(void);
+int		sequence_op(void);
+void	expand_handler(char **tokens);
+void	expand_str(char **var);
+void	expand_var(char **var);
+void	replace_var_str(char **str, int position);
+void	replace_var(char **str);
+void	set_child_pipes(t_cmd *cmd);
 
 #endif

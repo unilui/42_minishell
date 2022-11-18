@@ -6,14 +6,14 @@
 /*   By: lufelip2 <lufelip2@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 20:44:31 by lufelip2          #+#    #+#             */
-/*   Updated: 2022/11/11 09:29:56 by lufelip2         ###   ########.fr       */
+/*   Updated: 2022/11/17 19:37:19 by lufelip2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "minishell.h"
 
-static int is_single_value(char *str, char *value, int value_len)
+static int	is_single_value(char *str, char *value, int value_len)
 {
 	int	position;
 	int	i;

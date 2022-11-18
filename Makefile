@@ -45,8 +45,10 @@ SRCS		+=	expansion/var_expand.c\
 				expansion/path_expand.c\
 				expansion/handle_spaces.c\
 				expansion/var_expand_utils.c\
+				expansion/var_expand_utils2.c\
 				expansion/trim_args.c\
-				expansion/syntax_validate.c
+				expansion/syntax_validate.c\
+				expansion/syntax_validate_utils.c
 
 OBJS		= ${SRCS:%.c=$(OBJS_DIR)%.o}
 OBJS_DIR	= objects/
