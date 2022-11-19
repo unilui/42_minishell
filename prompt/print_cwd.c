@@ -6,7 +6,7 @@
 /*   By: lufelip2 <lufelip2@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/30 05:10:34 by lufelip2          #+#    #+#             */
-/*   Updated: 2022/11/08 09:38:28 by lufelip2         ###   ########.fr       */
+/*   Updated: 2022/11/19 13:37:28 by lufelip2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	print_cwd(void)
 	getcwd(path, 4095);
 	directories = ft_split(path, '/');
 	printed = 1;
-	printf("\n");
+	ft_printf("\n");
 	if (ft_strnstr(path, g_data.home, ft_strlen(g_data.home)))
 	{
 		ft_printf(LIGHT_BLUE"~"RESET);
@@ -68,5 +68,5 @@ void	print_cwd(void)
 	put_directories(directories, path, &printed);
 	put_dots(printed);
 	free_table(directories);
-	printf("\n");
+	ft_printf("\n");
 }

@@ -6,7 +6,7 @@
 /*   By: lufelip2 <lufelip2@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 00:36:26 by lufelip2          #+#    #+#             */
-/*   Updated: 2022/11/19 13:01:46 by lufelip2         ###   ########.fr       */
+/*   Updated: 2022/11/19 13:22:07 by lufelip2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,11 @@ void	wait_child(int *id)
 
 	if (id)
 		waitpid(*id, NULL, 0);
-	else while (wait(&wstatus) > 0)
-		g_data.last_exit_code = WEXITSTATUS(wstatus);
+	else
+	{
+		while (wait(&wstatus) > 0)
+			g_data.last_exit_code = WEXITSTATUS(wstatus);
+	}
 }
 
 void	exec_builtin(t_cmd *cmd)
@@ -51,7 +54,7 @@ void	exec_builtin(t_cmd *cmd)
 		builtin_import(cmd->args);
 }
 
-void	wait_handler(t_cmd *cmd, int last_type, int *last_id)
+void	wait_handler(t_cmd *cmd, int last_type, int *last_id, int *force_wait)
 {
 	int	i;
 
@@ -59,19 +62,26 @@ void	wait_handler(t_cmd *cmd, int last_type, int *last_id)
 	{
 		i = 0;
 		while (i++ < 5000000)
-			continue;
+			continue ;
 	}
-	if (last_type == EXT_BUILT_IN && !ft_strcmp(cmd->name, "heredoc"))
+	if ((last_type == EXT_BUILT_IN && !ft_strcmp(cmd->name, "heredoc"))
+		|| *force_wait)
+	{
 		wait_child(last_id);
+		*force_wait = 0;
+	}
 }
 
 void	child_process(t_cmd *cmd)
 {
 	static int	last_type;
 	static int	last_id;
+	static int	force_wait;
 
 	pipe_handler(SWAP);
-	wait_handler(cmd, last_type, &last_id);
+	wait_handler(cmd, last_type, &last_id, &force_wait);
+	if (!ft_strcmp(cmd->name, "heredoc"))
+		force_wait = 1;
 	last_id = fork();
 	if (!last_id)
 	{
@@ -87,6 +97,8 @@ void	child_process(t_cmd *cmd)
 	}
 	pipe_handler(CLOSE_IN);
 	last_type = cmd->type;
+	if (!cmd->next)
+		force_wait = 0;
 }
 
 void	execution(void)

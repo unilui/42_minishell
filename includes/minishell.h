@@ -6,7 +6,7 @@
 /*   By: lufelip2 <lufelip2@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 00:29:12 by lufelip2          #+#    #+#             */
-/*   Updated: 2022/11/17 21:59:48 by lufelip2         ###   ########.fr       */
+/*   Updated: 2022/11/19 13:35:34 by lufelip2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,10 +92,20 @@ typedef struct s_data
 
 extern t_data	g_data;
 
-void	print_cwd(void);
+// Settings ================================================================ //
+
 void	shell_init(char **envp);
 void	free_table(char **table);
-void	prompt(void);
+void	clear_exec_lst(t_cmd **cmd);
+void	clear_env_lst(t_env **env);
+void	ignore_signals(void);
+void	sig_defaults(void);
+void	signal_handlers(void);
+void	sigint_handler(int signal);
+
+// Envp ==================================================================== //
+
+char	**get_env_table(void);
 void	env_lst_add(t_env **lst, t_env *new);
 t_env	*create_var(char	*key, char *value);
 void	set_env_variables(char **envp, t_env **env);
@@ -104,6 +114,48 @@ void	set_exec_path(void);
 char	*get_env(char *env);
 void	set_extern_env(char *key, char *value, int add);
 void	set_local_env(char *key, char *value);
+char	*get_path(char *executable);
+
+// Prompt ================================================================== //
+
+void	print_cwd(void);
+void	prompt(void);
+
+// Syntax checker ========================================================== //
+
+void	syntax_validate(void);
+int		is_valid_identifier(char const *chr);
+int		is_directory(char *path);
+int		is_not_operator(int position, char const *line);
+int		open_quotes(void);
+int		unexpected_token(void);
+int		valid_operator(char *op);
+int		wrong_op(void);
+int		sequence_op(void);
+
+// Expansion =============================================================== //
+
+int		no_quotes(char *var);
+int		path_expand(t_cmd *cmd);
+int		btw_single_quotes(char *str);
+int		btw_double_quotes(int position, char *str);
+int		is_expandable(char *str);
+int		is_local_var(char *cmd);
+void	var_expand(void);
+void	handle_spaces(void);
+void	replace_home(char **var);
+void	trim_args(void);
+void	put_quotes(char **var);
+void	replace_exit_code(char **str);
+void	replace_home(char **var);
+void	expand_str(char **var);
+void	expand_var(char **var);
+void	replace_var_str(char **str, int position);
+void	replace_var(char **str);
+void	expand_handler(char **tokens);
+
+// Tokenizer =============================================================== //
+
 void	tokenizer(void);
 int		btw_quotes(int position, char const *line);
 char	**token_split(char const *line, int (*is_sep)(int, char const *));
@@ -114,13 +166,30 @@ int		is_value(int position, char const *line);
 int		next_operator(char *line, int *operator);
 void	get_nearby_ops(int *prev_op, int *next_op);
 char	**trim_spaces(char **table);
-void	execution(void);
-void	clear_exec_lst(t_cmd **cmd);
-void	clear_env_lst(t_env **env);
-void	exec_lst_add(t_cmd **lst, t_cmd *new);
 t_cmd	*new_exec_token(char *cmd, int prev_op, int next_op, int b_wall);
-char	**get_env_table(void);
-char	*get_path(char *executable);
+void	exec_lst_add(t_cmd **lst, t_cmd *new);
+int		table_size(char **table);
+char	*table_join(char **table, char *sep);
+void	trim_quotes(char **var);
+void	arg_hoisting(char *args);
+void	import_tokenizer(char *cmd, int prev_op, int next_op);
+void	write_tokenizer(char *cmd, int prev_op, int next_op);
+void	read_tokenizer(char *cmd, int prev_op, int next_op);
+
+// Execution =============================================================== //
+
+void	wait_child(int *status);
+void	execution(void);
+void	pipe_handler(int op);
+void	pipe_swap(int *init);
+void	pipe_close_in(int *hist);
+void	pipe_circle(int hist);
+void	pipe_close_init(int hist);
+void	pipe_close_out(int *init, int *hist);
+void	set_child_pipes(t_cmd *cmd);
+
+// Builtin ================================================================= //
+
 void	builtin_heredoc(char **args);
 void	builtin_infile(char **args);
 void	builtin_write(char **args);
@@ -131,56 +200,10 @@ void	builtin_export(char **args);
 void	builtin_unset(char **args);
 void	builtin_import(char **args);
 int		block_direct_call(char *cmd);
-int		table_size(char **table);
 void	builtin_pwd(void);
 char	**buffer_table(char **table, char *str);
 void	send_buffer(char **table, int fd, int nwl);
-void	pipe_handler(int op);
-void	pipe_swap(int *init);
-void	pipe_close_in(int *hist);
-void	pipe_circle(int hist);
-void	pipe_close_init(int hist);
-void	pipe_close_out(int *init, int *hist);
-char	*table_join(char **table, char *sep);
 void	exit_shell(int exit_code);
-void	var_expand(void);
 void	builtin_exit(char **args);
-void	handle_spaces(void);
-int		path_expand(t_cmd *cmd);
-void	ignore_signals(void);
-void	sig_defaults(void);
-void	signal_handlers(void);
-void	sigint_handler(int signal);
-int		btw_double_quotes(int position, char *str);
-int		btw_single_quotes(char *str);
-void	replace_home(char **var);
-int		is_expandable(char *str);
-void	trim_quotes(char **var);
-void	arg_hoisting(char *args);
-void	write_tokenizer(char *cmd, int prev_op, int next_op);
-void	read_tokenizer(char *cmd, int prev_op, int next_op);
-void	import_tokenizer(char *cmd, int prev_op, int next_op);
-int		is_local_var(char *cmd);
-void	wait_child(int *status);
-void	trim_args(void);
-void	syntax_validate(void);
-int		is_valid_identifier(char const *chr);
-int		is_directory(char *path);
-int		is_not_operator(int position, char const *line);
-int		no_quotes(char *var);
-void	put_quotes(char **var);
-void	replace_exit_code(char **str);
-void	replace_home(char **var);
-int		open_quotes(void);
-int		unexpected_token(void);
-int		valid_operator(char *op);
-int		wrong_op(void);
-int		sequence_op(void);
-void	expand_handler(char **tokens);
-void	expand_str(char **var);
-void	expand_var(char **var);
-void	replace_var_str(char **str, int position);
-void	replace_var(char **str);
-void	set_child_pipes(t_cmd *cmd);
 
 #endif
