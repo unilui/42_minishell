@@ -23,7 +23,7 @@ static void	put_directories(char **directories, char *path, int *printed)
 	while (directories[i])
 	{
 		if (!ft_strnstr(g_data.home, directories[i], home_len)
-			|| (ft_strlen(path) < home_len))
+			|| ((int)ft_strlen(path) < home_len))
 		{
 			if (directories[i + 1])
 				ft_printf(DARK_BLUE"/%s"RESET, directories[i]);

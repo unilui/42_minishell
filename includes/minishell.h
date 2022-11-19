@@ -172,8 +172,8 @@ int		table_size(char **table);
 char	*table_join(char **table, char *sep);
 void	trim_quotes(char **var);
 void	arg_hoisting(char *args);
-void	import_tokenizer(char *cmd, int prev_op, int next_op);
-void	write_tokenizer(char *cmd, int prev_op, int next_op);
+void	import_tokenizer(char *cmd, int prev_op);
+void	write_tokenizer(char *cmd, int prev_op);
 void	read_tokenizer(char *cmd, int prev_op, int next_op);
 
 // Execution =============================================================== //

@@ -54,7 +54,7 @@ OBJS		= ${SRCS:%.c=$(OBJS_DIR)%.o}
 OBJS_DIR	= objects/
 NAME		= minishell
 CC			= cc
-WFLAGS		= -Wall -Werror -Wextra
+CFLAGS		= -Wall -Werror -Wextra
 LIBS		= libft/libft.a -lreadline
 RM			= rm -rf
 
@@ -65,7 +65,7 @@ $(OBJS_DIR)%.o:	%.c
 all:		libft $(NAME)
 
 $(NAME):	$(OBJS)
-			@${CC} $(OBJS) -g -o $(NAME) $(LIBS)
+			@${CC} $(CFLAGS) $(OBJS) -g -o $(NAME) $(LIBS)
 
 libft:
 			@make -C libft --no-print-directory
@@ -85,3 +85,4 @@ test:		re
 			./minishell
 
 .PHONY:		all clean fclean re libft
+

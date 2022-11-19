@@ -42,7 +42,7 @@ void	arg_hoisting(char *args)
 	}
 }
 
-void	write_tokenizer(char *cmd, int prev_op, int next_op)
+void	write_tokenizer(char *cmd, int prev_op)
 {
 	char	*new_cmd;
 	char	*tmp;
@@ -87,7 +87,7 @@ void	read_tokenizer(char *cmd, int prev_op, int next_op)
 	free_table(args);
 }
 
-void	import_tokenizer(char *cmd, int prev_op, int next_op)
+void	import_tokenizer(char *cmd, int prev_op)
 {
 	char	*new_cmd;
 	char	**args;

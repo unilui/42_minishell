@@ -26,7 +26,7 @@ void	builtin_echo(char **args)
 		new_line--;
 		i++;
 	}
-	if (table_size(args) > 1)
+	if (table_size(args) > 1 && args[i])
 	{
 		text = table_join((args + i), " ");
 		ft_printf("%s", text);

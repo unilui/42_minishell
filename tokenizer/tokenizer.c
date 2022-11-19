@@ -29,14 +29,14 @@ void	get_tokens(char **table)
 		{
 			b_wall = block_direct_call(table[token]);
 			if (is_local_var(table[token]))
-				import_tokenizer(table[token], prev_op, next_op);
+				import_tokenizer(table[token], prev_op);
 			else if (prev_op == PIPE || !prev_op || (b_wall && prev_op != 2))
 				exec_lst_add(&g_data.cmd,
 					new_exec_token(table[token], prev_op, next_op, b_wall));
 			else if (prev_op == HEREDOC || prev_op == INFILE)
 				read_tokenizer(table[token], prev_op, next_op);
 			else
-				write_tokenizer(table[token], prev_op, next_op);
+				write_tokenizer(table[token], prev_op);
 		}
 		token++;
 	}
