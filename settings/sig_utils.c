@@ -6,7 +6,7 @@
 /*   By: lufelip2 <lufelip2@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/30 05:03:09 by lufelip2          #+#    #+#             */
-/*   Updated: 2022/11/06 21:47:34 by lufelip2         ###   ########.fr       */
+/*   Updated: 2022/11/19 15:55:28 by lufelip2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	sigint_handler(int signal)
 	rl_replace_line("", 0);
 	rl_on_new_line();
 	rl_redisplay();
+	g_data.last_exit_code = 130;
 }
 
 void	signal_handlers(void)
