@@ -6,7 +6,7 @@
 /*   By: lufelip2 <lufelip2@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 02:35:55 by lufelip2          #+#    #+#             */
-/*   Updated: 2022/11/08 09:19:53 by lufelip2         ###   ########.fr       */
+/*   Updated: 2022/11/19 13:06:15 by lufelip2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	get_tokens(char **table)
 			b_wall = block_direct_call(table[token]);
 			if (is_local_var(table[token]))
 				import_tokenizer(table[token], prev_op, next_op);
-			else if (prev_op == PIPE || !prev_op || b_wall)
+			else if (prev_op == PIPE || !prev_op || (b_wall && prev_op != 2))
 				exec_lst_add(&g_data.cmd,
 					new_exec_token(table[token], prev_op, next_op, b_wall));
 			else if (prev_op == HEREDOC || prev_op == INFILE)

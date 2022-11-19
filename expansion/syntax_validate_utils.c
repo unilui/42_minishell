@@ -6,7 +6,7 @@
 /*   By: lufelip2 <lufelip2@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 21:17:37 by lufelip2          #+#    #+#             */
-/*   Updated: 2022/11/18 20:56:40 by lufelip2         ###   ########.fr       */
+/*   Updated: 2022/11/19 13:03:31 by lufelip2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	unexpected_token(void)
 {
 	int	len;
 
-	if (is_operator(0, g_data.line))
+	if (is_operator(0, g_data.line) && g_data.line[0] != '<')
 	{
 		ft_printf("syntax error near unexpected token: `%c'\n",
 			g_data.line[0]);

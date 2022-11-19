@@ -6,7 +6,7 @@
 /*   By: lufelip2 <lufelip2@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 20:44:31 by lufelip2          #+#    #+#             */
-/*   Updated: 2022/11/17 19:37:19 by lufelip2         ###   ########.fr       */
+/*   Updated: 2022/11/19 13:04:08 by lufelip2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static int	is_single_value(char *str, char *value, int value_len)
 			return (0);
 		i--;
 	}
-	i = position + value_len;
+	i = position + value_len - 1;
 	while (str[i])
 	{
 		if (str[i] != '\'' && str[i] != '\"')

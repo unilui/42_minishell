@@ -6,21 +6,21 @@
 /*   By: lufelip2 <lufelip2@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 00:36:26 by lufelip2          #+#    #+#             */
-/*   Updated: 2022/11/17 21:59:30 by lufelip2         ###   ########.fr       */
+/*   Updated: 2022/11/19 13:01:46 by lufelip2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
 
-void	wait_child(int *status)
+void	wait_child(int *id)
 {
 	int	wstatus;
 
-	while (wait(&wstatus) > 0)
+	if (id)
+		waitpid(*id, NULL, 0);
+	else while (wait(&wstatus) > 0)
 		g_data.last_exit_code = WEXITSTATUS(wstatus);
-	if (status)
-		*status = 0;
 }
 
 void	exec_builtin(t_cmd *cmd)
@@ -51,25 +51,29 @@ void	exec_builtin(t_cmd *cmd)
 		builtin_import(cmd->args);
 }
 
-void	wait_handler(t_cmd *cmd, int *wait_builtin, int last_type)
+void	wait_handler(t_cmd *cmd, int last_type, int *last_id)
 {
-	if (*wait_builtin && cmd->type == EXT_BUILT_IN)
-		wait_child(wait_builtin);
-	if (cmd->type == EXT_BUILT_IN
-		&& last_type == EXT_BUILT_IN
-		&& cmd->next
-		&& cmd->next->type == EXTERNAL)
-		*wait_builtin = 1;
+	int	i;
+
+	if (cmd->type == EXT_BUILT_IN)
+	{
+		i = 0;
+		while (i++ < 5000000)
+			continue;
+	}
+	if (last_type == EXT_BUILT_IN && !ft_strcmp(cmd->name, "heredoc"))
+		wait_child(last_id);
 }
 
 void	child_process(t_cmd *cmd)
 {
-	static int	wait_builtin;
 	static int	last_type;
+	static int	last_id;
 
 	pipe_handler(SWAP);
-	wait_handler(cmd, &wait_builtin, last_type);
-	if (!fork())
+	wait_handler(cmd, last_type, &last_id);
+	last_id = fork();
+	if (!last_id)
 	{
 		sig_defaults();
 		set_child_pipes(cmd);
@@ -83,8 +87,6 @@ void	child_process(t_cmd *cmd)
 	}
 	pipe_handler(CLOSE_IN);
 	last_type = cmd->type;
-	if (!cmd->next)
-		wait_builtin = 0;
 }
 
 void	execution(void)

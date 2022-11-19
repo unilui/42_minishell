@@ -6,7 +6,7 @@
 /*   By: lufelip2 <lufelip2@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 09:19:33 by lufelip2          #+#    #+#             */
-/*   Updated: 2022/11/12 16:38:32 by lufelip2         ###   ########.fr       */
+/*   Updated: 2022/11/19 13:05:35 by lufelip2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,13 +75,14 @@ void	read_tokenizer(char *cmd, int prev_op, int next_op)
 	else
 		new_cmd = ft_strjoin("infile ", cmd);
 	args = token_split(new_cmd, is_space);
+	exec_lst_add(&g_data.cmd, new_exec_token(new_cmd, prev_op, FALSE, FALSE));
 	if (table_size(args) > 2)
 	{
 		tmp = table_join((args + 2), " ");
 		arg_hoisting(tmp);
+		exec_lst_add(&g_data.cmd, new_exec_token(tmp, PIPE, next_op, FALSE));
 		free(tmp);
 	}
-	exec_lst_add(&g_data.cmd, new_exec_token(new_cmd, prev_op, FALSE, FALSE));
 	free(new_cmd);
 	free_table(args);
 }
